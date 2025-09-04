@@ -41,11 +41,11 @@ class RanksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ranks $ranks)
+    public function show($ranks)
     {
         $rank = Ranks::find($ranks);
         if(!$rank){
-            return response()->json(['message'=> 'id not found'],404);
+            return response()->json(['message'=> 'record not found'],404);
         }
         return response()->json($rank,200);
     }
@@ -61,7 +61,7 @@ class RanksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ranks $ranks)
+    public function update(Request $request, $ranks)
     {
         $rank = Ranks::find($ranks);
         if(!$rank){
@@ -80,7 +80,7 @@ class RanksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ranks $ranks)
+    public function destroy($ranks)
     {
         $rank = Ranks::find($ranks);
         if(!$rank){
