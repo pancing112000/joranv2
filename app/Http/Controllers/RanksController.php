@@ -12,7 +12,7 @@ class RanksController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Ranks::all());
     }
 
     /**
@@ -28,7 +28,14 @@ class RanksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'sequence' => 'required|string',
+            'weight' => 'required|numeric',
+            'time_caught' => 'required|date'
+        ]);
+
+        $rank = Ranks::create($validated);
+        return response()->json($rank,201);
     }
 
     /**
@@ -36,7 +43,11 @@ class RanksController extends Controller
      */
     public function show(Ranks $ranks)
     {
-        //
+        $rank = Ranks::find($ranks);
+        if(!$rank){
+            return response()->json(['message'=> 'id not found'],404);
+        }
+        return response()->json($rank,200);
     }
 
     /**
@@ -52,7 +63,18 @@ class RanksController extends Controller
      */
     public function update(Request $request, Ranks $ranks)
     {
-        //
+        $rank = Ranks::find($ranks);
+        if(!$rank){
+            return response()->json(['message' => 'record not found'],400);
+        }
+        
+        $validated = $request->validate([
+            'sequence' => 'required|string',
+            'weight' => 'required|numeric',
+            'time_caught' => 'required|date'
+        ]);
+        $rank->update($validated);
+        return response()->json($rank,200);
     }
 
     /**
@@ -60,6 +82,11 @@ class RanksController extends Controller
      */
     public function destroy(Ranks $ranks)
     {
-        //
+        $rank = Ranks::find($ranks);
+        if(!$rank){
+            return response()->json(['message'=>'record not found'],400);
+        }
+        $rank->delete();
+        return response()->json(['message'=>'record deleted'],200);
     }
 }
